@@ -121,9 +121,14 @@ logger.log_level = logger.QUIET
 #logger.log_level = logger.VERBOSE
 #logger.log_level = logger.DEBUG
 
-__mydir = '/home/tromey/Space/gdb/GitUpgrade/'
-execfile(__mydir + 'UserMap/usermap.py')
-__my_user_map = user_mapping(__mydir + 'Total-merged-user-map')
+import os
+import inspect
+
+# Fun trick.
+__mydir = os.path.dirname(os.path.abspath(inspect.getsourcefile(lambda _: None)))
+
+execfile(os.path.join(__mydir, 'usermap.py'))
+__my_user_map = user_mapping(os.path.join(__mydir, 'Total-merged-user-map'))
 
 
 # The directory to use for temporary files:
