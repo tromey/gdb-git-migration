@@ -1,0 +1,5 @@
+# Remove non-converted files from src
+
+test -f move-if-change,v || { echo "wrong dir"; exit 1; }
+
+rm -rf blt cgen dejagnu expat expect itcl iwidgets libgloss libgui newlib proto-toplev rda sid tcl texinfo tix tk utils winsup gdb/gdbtk gdb/testsuite/gdb.gdbtk 

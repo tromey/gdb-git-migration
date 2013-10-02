@@ -1,0 +1,4 @@
+# use as --tree-filter on gdb-old-releases
+mkdir ,,,
+mv * .??* ,,,/
+mv ,,, gdb

@@ -1,0 +1,1 @@
+rsync -rav --compress --delete rsync://sourceware.org/src-cvs src-rsync
