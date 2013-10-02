@@ -20,10 +20,10 @@ def user_mapping(filename):
 
 mapping = user_mapping('combined-meyering-user-map')
 
-with open('../iant-unpacked/USERS') as f:
+with open('USERS') as f:
     for line in f:
         line = line.rstrip()
-        if line in mapping:
+        if line not in mapping:
             mapping[line] = 'FIXME <%s@cygnus>' % line
 
 for i in sorted(mapping.items()):
