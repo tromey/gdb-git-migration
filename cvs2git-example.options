@@ -283,7 +283,7 @@ class AllowJustSomeBranches(StrategyRule):
     _my_pattern = '(?i)(gdb[^t]|(after|before)-(fsf|merge|sourceware)|bfd|binutils|gas|readline|sim|sourceware|(fsf$))'
 
     # Additional stuff to reject.
-    _reject = 'gdb-9606'
+    _reject = '^(gdb-9606|gdb-premipsmulti)'
 
     def __init__(self):
         self.regexp = re.compile(self._my_pattern)
