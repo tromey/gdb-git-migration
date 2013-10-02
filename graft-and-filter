@@ -1,0 +1,34 @@
+# Run this to graft the master revision from repo
+# OLD onto the base of the repo NEW.
+# Then runs filter-branch to make the graft permanent
+
+OLD="$(cd $1 && pwd)"
+NEW="$(cd $2 && pwd)"
+
+test -f $OLD/config || exit 1
+test -f $NEW/config || exit 1
+
+echo ================
+echo == Repacking $OLD
+
+cd $OLD
+firstrev=$(git log --pretty=format:%H | head -1)
+
+git repack -d -A
+
+echo ================
+echo == Setting up grafts
+
+cd $NEW
+
+lastrev=$(git log --pretty=format:%H | tail -1)
+
+mkdir -p info
+echo "$lastrev $firstrev" > info/grafts
+
+cp -v $OLD/objects/pack/* objects/pack/
+
+echo ================
+echo == Running filter-branch
+
+git filter-branch -- --all
