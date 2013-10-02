@@ -327,7 +327,18 @@ class AllowJustSomeBranches(StrategyRule):
 # that has already been processed by an earlier rule, so in effect the
 # first matching rule is the one that is used.
 
-global_symbol_strategy_rules = [
+global_symbol_strategy_rules = [ ]
+
+if WANT_JUST_SOME_BRANCHES:
+    global_symbol_strategy_rules.append(
+        AllowJustSomeBranches()
+    )
+else:
+    global_symbol_strategy_rules.append(
+        ExcludeRegexpStrategyRule(r'unlabeled-.*')
+    )
+
+global_symbol_strategy_rules += [
     # It is possible to specify manually exactly how symbols should be
     # converted and what line of development should be used as the
     # preferred parent.  To do so, create a file containing the symbol
@@ -354,9 +365,6 @@ global_symbol_strategy_rules = [
     # To force all symbols matching a regular expression to be
     # excluded from the conversion, add rules like the following:
     #ExcludeRegexpStrategyRule(r'unknown-.*'),
-
-    # Our own hack.
-    AllowJustSomeBranches(),
 
     # Sometimes people use "cvs import" to get their own source code
     # into CVS.  This practice creates a vendor branch 1.1.1 and
