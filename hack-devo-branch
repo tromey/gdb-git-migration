@@ -1,0 +1,12 @@
+# Hack a branch into the devo and reset master.
+# This establishes a baseline for the "src" repository.
+
+DIR="$1"
+
+# The magic revision I've selected.
+magic=a21ee583ed22940f254b5f0b2771997a74bf73f9
+
+cd $DIR
+git branch devo-after-sourceware-migration
+
+git reset --soft $magic
