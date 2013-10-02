@@ -280,10 +280,14 @@ from cvs2svn_lib.symbol import TypedSymbol
 
 class AllowJustSomeBranches(StrategyRule):
     # Just stuff to allow through.
-    __my_pattern = '(?i)(gdb[^t]|(after|before)-(fsf|merge|sourceware)|bfd|binutils|gas|readline|sim|sourceware)'
+    _my_pattern = '(?i)(gdb[^t]|(after|before)-(fsf|merge|sourceware)|bfd|binutils|gas|readline|sim|sourceware|(fsf$))'
+
+    # Additional stuff to reject.
+    _reject = 'gdb-9606'
 
     def __init__(self):
-        self.regexp = re.compile(self.__my_pattern)
+        self.regexp = re.compile(self._my_pattern)
+        self.reject = re.compile(self._reject)
 
     def log(self, symbol):
         logger.verbose(
@@ -293,7 +297,7 @@ class AllowJustSomeBranches(StrategyRule):
     def get_symbol(self, symbol, stats):
         if isinstance(symbol, (Trunk, TypedSymbol)):
             return symbol
-        elif self.regexp.match(symbol.name):
+        elif self.regexp.match(symbol.name) and not self.reject.match(symbol.name):
             self.log(symbol)
             return symbol
         else:
