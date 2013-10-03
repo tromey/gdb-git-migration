@@ -16,4 +16,4 @@ with open('missed-users') as f:
         if line not in passwdmap:
             print line
             sys.exit(1)
-        print '%s <%s@sourceware.org>' % (passwdmap[line], line)
+        print '%s=%s <%s@sourceware.org>' % (line, passwdmap[line], line)
