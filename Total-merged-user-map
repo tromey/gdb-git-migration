@@ -85,7 +85,7 @@ dgutson=Daniel Gutson <dgutson@codesourcery.com>
 dhoward=Don Howard <dhoward@redhat.com>
 dhowells=David Howells <dhowells@cygnus>
 diwil=Dmitry Diky <diwil@spec.ru>
-dj=DJ Delorie <dj@delorie.com>
+dj=DJ Delorie <dj@redhat.com>
 dje=David Edelsohn <dje@watson.ibm.com>
 djm=David MacKenzie <djm@cygnus>
 dlindsay=Donald Lindsay <dlindsay@redhat.com>
@@ -320,7 +320,7 @@ seank=Sean Keys <skeys@ipdatasys.com>
 sef=Sean Eric Fagan <sef@cygnus>
 segher=Segher Boessenkool <segher@kernel.crashing.org>
 sergiodj=Sergio Durigan Junior <sergiodj@linux.vnet.ibm.com>
-shebs=Stan Shebs <shebs@apple.com>
+shebs=Stan Shebs <shebs@codesourcery.com>
 shinwell=Mark Shinwell <shinwell@codesourcery.com>
 shrinivas=Shrinivas Atre <shrinivasa@kpitcummins.com>
 simonb=Simon Baldwin <simonb@google.com>
@@ -334,7 +334,7 @@ speters=Stephen Peters <speters@cygnus>
 spolk=Syd Polk <spolk@apple.com>
 spop=Sebastian Pop <sebastian.pop@amd.com>
 ssmith=Stephen P. Smith <ischis2@cox.net>
-sterling=Sterling Augustine <sterling@tensilica.com>
+sterling=Sterling Augustine <saugustine@google.com>
 steve=FIXME <steve@cygnus>
 sveinse=Svein Seldal <svein@dev.seldal.com>
 swagiaal=Sami Wagiaalla <swagiaal@redhat.com>
@@ -378,3 +378,50 @@ ysato=Yoshinori Sato <ysato@users.sourceforge.jp>
 yufeng=Yufeng Zhang <yufeng.zhang@arm.com>
 zack=Zack Weinberg <zackw@panix.com>
 zoo=David D. Zuhn <zoo@cygnus>
+Hafiz Abid Qadeer <abidh@sourceware.org>
+Ali Anwar <alianwar@sourceware.org>
+Andreas Tobler <andreast@sourceware.org>
+Anton Blanchard <anton@sourceware.org>
+Ralf Corsepius <corsepiu@sourceware.org>
+Cheng Renquan <crq@sourceware.org>
+David Blaikie <dblaikie@sourceware.org>
+Dmitry Kozlov <ddk@sourceware.org>
+Edjunior Machado <emachado@sourceware.org>
+Fawzi Mohamed <fawzi@sourceware.org>
+Gary Benson <gary@sourceware.org>
+Kaveh Ghazi <ghazi@sourceware.org>
+Janis Johnson <janis@sourceware.org>
+Jean-Charles Delay <jcd@sourceware.org>
+Jiong Wang <jiwang@sourceware.org>
+Justin Lebar <jlebar@sourceware.org>
+Kwok Yeung <kcy@sourceware.org>
+Yit Phang Khoo <khooyp@sourceware.org>
+Kevin Pouget <kpouget@sourceware.org>
+Kyrylo Tkachov <ktkachov@sourceware.org>
+Karthik Bhat <kvbhat@sourceware.org>
+Lei Liu <lei@sourceware.org>
+Muhammad Bilal <mbilal@sourceware.org>
+Meador Inge <meadori@sourceware.org>
+Jim Meyering <meyering@sourceware.org>
+Mircea Gherzan <mgherzan@sourceware.org>
+Markus Metzger <mmetzger@sourceware.org>
+Masaki Muranaka <monaka@sourceware.org>
+Marek Polacek <mpolacek@sourceware.org>
+Marcus Shawcroft <mshawcroft@sourceware.org>
+Muhammad Waqas <mwaqas@sourceware.org>
+Andrey Smirnov <ndreys@sourceware.org>
+Pawandeep Oza <ozapawandeep@sourceware.org>
+Philippe Waroquiers <philippe@sourceware.org>
+matt rice <ratmice@sourceware.org>
+Ricard Wanderlof <ricard@sourceware.org>
+Sanimir Agovic <sagovic@sourceware.org>
+Sanjoy Das <sanjoyd@sourceware.org>
+Saravanan Ekanathan <sekanath@sourceware.org>
+Ozkan Sezer <sezero@sourceware.org>
+Siddhesh Poyarekar <siddhesh@sourceware.org>
+Siva Chandra Reddy <sivachandra@sourceware.org>
+Tiago Daitx <tdaitx@sourceware.org>
+Will Newton <willnewton@sourceware.org>
+Walfred Tedeschi <wtedeschi@sourceware.org>
+Anton Gorenkov <xgsa@sourceware.org>
+xuepeng guo <xguo@sourceware.org>
