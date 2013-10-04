@@ -4,6 +4,45 @@ gdb-git-migration
 Scripts and files for migrating gdb+binutils to git
 
 
+Instructions
+------------
+
+These are just basic instructions, not including stuff like making new
+directories and cd'ing to the right spot for various operations.
+
+* Start with a copy of the old "devo" CVSROOT 
+
+* Grab sourceware's "src" CVSROOT using rsync-command
+
+* Check out the "old gdb releases" git repository
+
+* Convert devo:
+
+  cvs2git --options=options-devo.py
+  make-git-repository
+
+* Hack it:
+
+  hack-devo-branch
+
+* Convert src:
+
+  sh -x RemoveFiles
+  cvs2git --options=options-src.py
+  make-git-repository
+
+* Hack up old-gdb-releases:
+
+  Rewrite-index-old-releases
+
+* Merge:
+
+  run graft-and-filter twice, first old->devo, then devo->src
+
+
+File details
+------------
+
 * RemoveFiles
 
   A script to remove files from a copy of the "src" tree.
@@ -45,7 +84,11 @@ Scripts and files for migrating gdb+binutils to git
   older users.  I used merge-authors.py to merge this with the
   Meyering map.
 
+  Next I got logins from the "src" cvs->git conversion and looked
+  those up in sourceware's /etc/passwd.
+
+  Finally I asked on the list for updates.
+
 * rsync-command
 
   rsync the "src" repository
-

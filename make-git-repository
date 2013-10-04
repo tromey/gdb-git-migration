@@ -1,0 +1,18 @@
+#!/bin/sh
+# make a git repository after cvs2git has been run.
+
+if ! test -d cvs2svn-tmp; then
+  echo "in wrong dir"
+  exit 1
+fi
+if ! test -f cvs2svn-tmp/git-blob.dat || ! test -f cvs2svn-tmp/git-dump.dat; then
+  echo ".dat file missing"
+  exit 1
+fi
+
+rm -rf testgit
+mkdir testgit
+cd testgit
+git init --bare
+
+cat ../cvs2svn-tmp/git-blob.dat ../cvs2svn-tmp/git-dump.dat | git fast-import
