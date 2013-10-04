@@ -334,9 +334,12 @@ if WANT_JUST_SOME_BRANCHES:
         AllowJustSomeBranches()
     )
 else:
-    global_symbol_strategy_rules.append(
-        ExcludeRegexpStrategyRule(r'unlabeled-.*')
-    )
+    global_symbol_strategy_rules += [
+        ExcludeRegexpStrategyRule(r'unlabeled-.*'),
+        # This requires a boatload of unlabeled-* branches,
+        # and it just doesn't seem that important.
+        ExcludeRegexpStrategyRule(r'jimb-gdb_6_2-e500-branch')
+    ]
 
 global_symbol_strategy_rules += [
     # It is possible to specify manually exactly how symbols should be
