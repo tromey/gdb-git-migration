@@ -1,0 +1,19 @@
+# This specifies which commit messages go to which lists.
+
+^bfd/  binutils-cvs@sourceware.org
+^binutils/  binutils-cvs@sourceware.org
+^cpu/  binutils-cvs@sourceware.org
+^elfcpp/  binutils-cvs@sourceware.org
+^gas/  binutils-cvs@sourceware.org
+^gold/  binutils-cvs@sourceware.org
+^gprof/  binutils-cvs@sourceware.org
+^include/  binutils-cvs@sourceware.org
+^ld/  binutils-cvs@sourceware.org
+^opcodes/  binutils-cvs@sourceware.org
+
+^gdb/  gdb-cvs@sourceware.org
+^readline/  gdb-cvs@sourceware.org
+^sim/  gdb-cvs@sourceware.org
+
+# Catch-all for anything remaining.
+.* src-cvs@sourceware.org

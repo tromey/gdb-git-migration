@@ -1,0 +1,12 @@
+[core]
+        repositoryformatversion = 0
+        filemode = true
+        bare = true
+        sharedrepository = 1
+[receive]
+        denynonfastforwards = true
+[hooks]
+        mailinglist = src-cvs@sourceware.org
+	recipientfile = src-email
+	showrev = t=%s; printf 'https://sourceware.org/git/gitweb.cgi?p=src.git;h=%%s' \$t; echo; echo; git rev-list -1 --pretty \$t
+	bugzillaproduct = gdb binutils
