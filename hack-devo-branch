@@ -3,8 +3,8 @@
 
 DIR="$1"
 
-# The magic revision I've selected.
-magic=a21ee583ed22940f254b5f0b2771997a74bf73f9
+# I chose the branchpoint for the 4.18 release.
+magic=$(git merge-base gdb-4_18-branch master)
 
 cd $DIR
 git branch devo-after-sourceware-migration
