@@ -32,3 +32,11 @@ echo ================
 echo == Running filter-branch
 
 git filter-branch -- --all
+
+
+echo ================
+echo == Cleaning up
+
+# We have to do this to keep the repository at a sensible size.
+git reflog expire --expire=now --all
+git gc --prune=now
