@@ -191,7 +191,7 @@ ctx.trunk_only = False
 # information loss.
 ctx.cvs_author_decoder = CVSTextDecoder(
     [
-        #'utf8',
+        'utf8',
         'latin1',
         #'ascii',
         ],
@@ -199,7 +199,7 @@ ctx.cvs_author_decoder = CVSTextDecoder(
     )
 ctx.cvs_log_decoder = CVSTextDecoder(
     [
-        #'utf8',
+        'utf8',
         'latin1',
         #'ascii',
         ],
