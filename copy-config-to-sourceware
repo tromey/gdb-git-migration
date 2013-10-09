@@ -12,5 +12,6 @@ set -x
 
 scp $where/src-git-config $dest/config
 scp $where/src-git-description $dest/description
+scp $where/src-email $dest/src-email
 
 ssh $host ln -sf /sourceware/infra/bin/post-receive-email $ddir/hooks/post-receive
