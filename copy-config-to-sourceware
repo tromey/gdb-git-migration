@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Copy various config bits into src.git to set it up.
+
+where=$(dirname $0)
+
+host=sourceware.org
+ddir=/sourceware/git/src.git
+dest=$host:$ddir
+
+set -x
+
+scp $where/src-git-config $dest/config
+scp $where/src-git-description $dest/description
+
+ssh $host ln -sf /sourceware/infra/bin/post-receive-email $ddir/hooks/post-receive
