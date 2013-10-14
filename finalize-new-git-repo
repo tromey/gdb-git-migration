@@ -2,8 +2,13 @@
 
 # Copy various config bits into src.git to set it up.
 
-# Usage: finalize-new-git-repo PATH-TO-REPO
 DEST="$1"
+
+if test -z "$DEST"; then
+    echo "Usage: finalize-new-git-repo PATH-TO-REPO" 1>&2
+    exit 1
+fi
+
 
 where=$(dirname $0)
 
