@@ -17,5 +17,4 @@ set -x
 cp $where/src-git-config $DEST/config
 cp $where/src-git-description $DEST/description
 cp $where/src-email $DEST/src-email
-
-ln -sf /sourceware/infra/bin/post-receive-email $DEST/hooks/post-receive
+cp $where/post-receive $DEST/post-receive
