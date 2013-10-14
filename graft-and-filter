@@ -37,6 +37,8 @@ git filter-branch -- --all
 echo ================
 echo == Cleaning up
 
+rm info/grafts
+
 # We have to do this to keep the repository at a sensible size.
 git reflog expire --expire=now --all
-git gc --prune=now
+git gc --prune=now --aggressive
