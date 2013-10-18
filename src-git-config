@@ -12,3 +12,7 @@
 	emailprefix =
 [hooks "denymerge"]
 	master = true
+[irker]
+	urlprefix = gitweb
+	channels = "irc://chat.freenode.net/#gdb"
+	project = gdb
