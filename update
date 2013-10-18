@@ -1,0 +1,256 @@
+#!/bin/sh
+#
+# An example hook script to block unannotated tags from entering.
+# Called by "git receive-pack" with arguments: refname sha1-old sha1-new
+#
+# To enable this hook, rename this file to "update".
+#
+# Config
+# ------
+# hooks.allowunannotated
+#   This boolean sets whether unannotated tags will be allowed into the
+#   repository.  By default they won't be.
+# hooks.allowdeletetag
+#   This boolean sets whether deleting tags will be allowed in the
+#   repository.  By default they won't be.
+# hooks.allowmodifytag
+#   This boolean sets whether a tag may be modified after creation. By default
+#   it won't be.
+# hooks.allowdeletebranch
+#   This boolean sets whether deleting branches will be allowed in the
+#   repository.  By default they won't be.
+# hooks.denycreatebranch
+#   This boolean sets whether remotely creating branches will be denied
+#   in the repository.  By default this is allowed.
+#
+# hooks.allowbadwhitespace
+#   This boolean sets whether you may push a commit that adds bad whitespace.
+#   By default, you may not.
+#
+# hooks.denypush.branch.BRANCH_NAME
+#   If defined to a string that looks like an email address, this option
+#   disables push access to the specified branch.  When a push fails as
+#   a result of this option, the resulting diagnostic includes the specified
+#   email address.  For example, run this on the server to deny all push
+#   access to "master":
+#
+#   For example, enable it with this:
+#   git config hooks.denypush.branch.master master-branch-owner@example.com
+#
+# hooks.denymerge.BRANCH_NAME
+#   When this boolean is true, you may not push a merge commit to BRANCH_NAME.
+#   By default, you may.
+#
+# ---------------------------------------------------------------------
+# Allow people to change server-side git config in very specific ways.
+# To enable this, on the server, you must do something like the following,
+#
+# git config hooks.server.config-changing.valid-commands \
+# 'git config hooks.allowbadwhitespace true
+# git config hooks.allowbadwhitespace false
+# git config hooks.denypush.branch.master master-branch-owner@example.com
+# git config --unset hooks.denypush.branch.master'
+#
+# where the git config variable, hooks.server.config-changing.valid-commands,
+# contains the list of commands that are allowed, one per line.
+#
+# CAUTION: nothing about this hook code enforces the restriction that
+# only "git config ..." commands be run automatically.
+# That restriction comes solely from the list above.
+#
+# Then, when someone with a cloned repository wants to make the hook
+# run one of those commands *on* *the* *server*, that user must push
+# a tag whose name starts with "git-control-" and whose one-line message
+# matches exactly one of the listed commands.
+#
+# For example, to temporarily allow someone to push a bad-whitespace
+# commit, with the settings implied above, you might do this:
+#
+#   first_commit=$(git log --reverse --pretty=%H |head -1)
+#   git tag -m 'git config hooks.allowbadwhitespace true' \
+#     git-control-$(date +%F-%H-%M-%S.%N) $first_commit
+#
+# Note that we're not tagging HEAD, but rather the very first commit
+# in the repository, in an attempt not to clutter up gitk/gitweb
+# displays with these rarely-interesting tag names.
+#
+# Then, to reenable that hook, do this (nearly the same, except s/true/false/):
+#
+#   first_commit=$(git log --reverse --pretty=%H |head -1)
+#   git tag -m 'git config hooks.allowbadwhitespace false' \
+#     git-control-$(date +%F-%H-%M-%S.%N) $first_commit
+# ---------------------------------------------------------------------
+
+# --- Command line
+refname="$1"
+oldrev="$2"
+newrev="$3"
+
+is_merge_commit()
+{
+	git rev-parse --verify --quiet $1^2 > /dev/null
+}
+
+# --- Safety check
+if [ -z "$GIT_DIR" ]; then
+	echo "Don't run this script from the command line." >&2
+	echo " (if you want, you could supply GIT_DIR then run" >&2
+	echo "  $0 <ref> <oldrev> <newrev>)" >&2
+	exit 1
+fi
+
+if [ -z "$refname" -o -z "$oldrev" -o -z "$newrev" ]; then
+	echo "Usage: $0 <ref> <oldrev> <newrev>" >&2
+	exit 1
+fi
+
+# --- Config
+allowunannotated=$(git config --bool hooks.allowunannotated)
+allowdeletebranch=$(git config --bool hooks.allowdeletebranch)
+denycreatebranch=$(git config --bool hooks.denycreatebranch)
+allowdeletetag=$(git config --bool hooks.allowdeletetag)
+allowmodifytag=$(git config --bool hooks.allowmodifytag)
+
+# check for no description
+projectdesc=$(sed -e '1q' "$GIT_DIR/description")
+case "$projectdesc" in
+"Unnamed repository"* | "")
+	echo "*** Project description file hasn't been set" >&2
+	exit 1
+	;;
+esac
+
+# --- Check types
+# if $newrev is 0000...0000, it's a commit to delete a ref.
+zero="0000000000000000000000000000000000000000"
+if [ "$newrev" = "$zero" ]; then
+	newrev_type=delete
+else
+	newrev_type=$(git cat-file -t $newrev)
+fi
+
+check_diff=no
+case "$refname","$newrev_type" in
+	refs/tags/*,commit)
+		# un-annotated tag
+		short_refname=${refname##refs/tags/}
+		if [ "$allowunannotated" != "true" ]; then
+			echo "*** The un-annotated tag, $short_refname, is not allowed in this repository" >&2
+			echo "*** Use 'git tag [ -a | -s ]' for tags you want to propagate." >&2
+			exit 1
+		fi
+		;;
+	refs/tags/*,delete)
+		# delete tag
+		if [ "$allowdeletetag" != "true" ]; then
+			echo "*** Deleting a tag is not allowed in this repository" >&2
+			exit 1
+		fi
+		;;
+	refs/tags/*,tag)
+		case $refname in
+		  refs/tags/show)
+		    echo "*** a tag named 'show' is not permitted" >&2
+		    exit 1
+		    ;;
+		  refs/tags/git-control-*)
+		    cmd=$(git cat-file -p $newrev|tail -n+6)
+		    git config hooks.server.config-changing.valid-commands |
+		    (while read v_cmd; do
+		      if test "x$cmd" = "x$v_cmd"; then
+			echo Running cmd: "$v_cmd"
+			eval "$v_cmd"
+			match=1
+			exit 0 # found a match
+		      fi
+		    done
+		    exit 1 # signal failure to match
+		    )
+		    if test $? = 1; then
+		      echo "*** unrecognized directive: $cmd" >&2
+		      exit 1
+		    fi
+		    ;;
+		esac
+		# annotated tag
+		if [ "$allowmodifytag" != "true" ] && git rev-parse $refname > /dev/null 2>&1
+		then
+			echo "*** Tag '$refname' already exists." >&2
+			echo "*** Modifying a tag is not allowed in this repository." >&2
+			exit 1
+		fi
+		;;
+	refs/heads/*,commit)
+		# branch
+		if [ "$oldrev" = "$zero" -a "$denycreatebranch" = "true" ]; then
+			echo "*** Creating a branch is not allowed in this repository" >&2
+			exit 1
+		fi
+
+		check_diff=yes
+		branch=${1##refs/heads/}
+		deny_push_email=$(git config "hooks.denypush.branch.$branch")
+		case $deny_push_email in
+			'') ;;
+			*) printf "error: *** %s\n" \
+			      "commit on branch '$branch'" \
+			      "locked by $deny_push_email" >&2
+			 exit 1;;
+		esac
+
+		# When enabled, this prohibits pushing a merge commit.
+		# Enable this hook for branch "next" with e.g.,
+		# git config --bool hooks.denymerge.next true
+		deny_merge=$(git config --bool "hooks.denymerge.$branch")
+		case $deny_merge in
+		    true)
+			for r in $(test "$oldrev" = $zero \
+				     && git rev-list $newrev \
+				     || git rev-list $newrev ^$oldrev); do
+			  is_merge_commit $r && {
+			    printf "error: *** %s\n" \
+			  "You may not push merge commits to branch $branch." \
+			  "Did you forget to rebase? ($r)" >&2
+			  exit 1
+			  }
+			done
+			;;
+		esac
+
+		;;
+	refs/heads/*,delete)
+		# delete branch
+		if [ "$allowdeletebranch" != "true" ]; then
+			echo "*** Deleting a branch is not allowed in this repository" >&2
+			exit 1
+		fi
+		;;
+	refs/remotes/*,commit)
+		# tracking branch
+		check_diff=yes
+		;;
+	refs/remotes/*,delete)
+		# delete tracking branch
+		if [ "$allowdeletebranch" != "true" ]; then
+			echo "*** Deleting a tracking branch is not allowed in this repository" >&2
+			exit 1
+		fi
+		;;
+	*)
+		# Anything else (is there anything else?)
+		echo "*** Update hook: unknown type of update to ref $refname of type $newrev_type" >&2
+		exit 1
+		;;
+esac
+
+if [ $check_diff = yes ]; then
+	allow_bad_whitespace=$(git config --bool hooks.allowbadwhitespace)
+	if [ "$allow_bad_whitespace" != "true" ]; then
+		test "$oldrev" = $zero \
+			&& exit 0
+		exec git diff --check $oldrev $newrev --
+	fi
+fi
+
+# --- Finished
+exit 0
