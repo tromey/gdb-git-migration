@@ -7,7 +7,7 @@
 [hooks]
         mailinglist = src-cvs@sourceware.org
 	recipientfile = src-email
-	showrev = "t=%s; printf 'https://sourceware.org/git/gitweb.cgi?p=src.git;h=%%s' $t; echo; echo; git rev-list -1 --pretty $t"
+	showrev = "t=%s; printf 'https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;h=%%s' $t; echo; echo; git rev-list -1 --pretty $t"
 	bugzillaproduct = gdb binutils
 	emailprefix =
 [hooks "denymerge"]
