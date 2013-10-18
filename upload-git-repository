@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# upload the new git repository to sourceware.
+
+if test -n "$1"; then
+    echo "usage: upload-git-repository PATH"
+    exit 1
+fi
+
+local="$1"
+
+host=sourceware.org
+dest=/sourceware/projects/src-home/src-gitfiles
+
+ssh $host rm -rf new-repo.git
+rsync -rav $local $host:new-repo.git
+
+ssh $host chgrp -R src new-repo.git
+ssh $host chmod -R g+w new-repo.git
+ssh $host find new-repo.git -type d -print \| xargs chmod g+xw
+
+ssh $host mv $dest ${dest}-old
+ssh $host mv new-repo.git $dest
+
+echo ================
+echo == now you can remove ${dest}-old on sourceware
