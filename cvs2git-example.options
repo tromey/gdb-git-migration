@@ -338,7 +338,9 @@ else:
         ExcludeRegexpStrategyRule(r'unlabeled-.*'),
         # This requires a boatload of unlabeled-* branches,
         # and it just doesn't seem that important.
-        ExcludeRegexpStrategyRule(r'jimb-gdb_6_2-e500-branch')
+        ExcludeRegexpStrategyRule(r'jimb-gdb_6_2-e500-branch'),
+        ExcludeRegexpStrategyRule(r'SNAPSHOT')
+        # ExcludeRegexpStrategyRule(r'FSF')
     ]
 
 global_symbol_strategy_rules += [
