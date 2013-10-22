@@ -2,7 +2,7 @@
 
 # upload the new git repository to sourceware.
 
-if test -n "$1"; then
+if test -z "$1"; then
     echo "usage: upload-git-repository PATH"
     exit 1
 fi
