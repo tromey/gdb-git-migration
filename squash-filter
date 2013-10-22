@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# evil squashing filter.
+
+git filter-branch -f --commit-filter '
+  if test $GIT_COMMIT = 071ea11e85eb9d529cc5eb3d35f6247466a21b99 || test $GIT_COMMIT = c906108c21474dfb4ed285bcc0ac6fe02cd400cc || test $GIT_COMMIT = 7a292a7adf506b866905b06b3024c0fd411c4583; then
+    skip_commit "$@";
+  else
+    git commit-tree "$@";
+fi' -- --all
