@@ -17,7 +17,7 @@ rsync -rav $local $host:new-repo.git
 
 ssh $host chgrp -R src new-repo.git
 ssh $host chmod -R g+w new-repo.git
-ssh $host find new-repo.git -type d -print \| xargs chmod g+xw
+ssh $host find new-repo.git -type d -print \| xargs chmod g+xws
 
 ssh $host mv $dest ${dest}-old
 ssh $host mv new-repo.git $dest
