@@ -17,7 +17,7 @@ set -x
 cp $where/src-git-config $DEST/config
 cp $where/src-git-description $DEST/description
 cp $where/src-email $DEST/src-email
-cp $where/post-receive $DEST/post-receive
-cp $where/update $DEST/update
+cp $where/post-receive $DEST/hooks/post-receive
+cp $where/update $DEST/hooks/update
 
-mv $DEST/post-update.sample $DEST/post-update
+mv $DEST/hooks/post-update.sample $DEST/hooks/post-update
