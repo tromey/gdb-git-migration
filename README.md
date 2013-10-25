@@ -39,6 +39,9 @@ directories and cd'ing to the right spot for various operations.
 
   run graft-and-filter twice, first old->devo, then devo->src
 
+* Run finalize-new-git-repo on the final repository
+
+* Run upload-git-repository 
 
 File details
 ------------
