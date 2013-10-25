@@ -153,24 +153,24 @@ case "$refname","$newrev_type" in
 		    echo "*** a tag named 'show' is not permitted" >&2
 		    exit 1
 		    ;;
-		  refs/tags/git-control-*)
-		    cmd=$(git cat-file -p $newrev|tail -n+6)
-		    git config hooks.server.config-changing.valid-commands |
-		    (while read v_cmd; do
-		      if test "x$cmd" = "x$v_cmd"; then
-			echo Running cmd: "$v_cmd"
-			eval "$v_cmd"
-			match=1
-			exit 0 # found a match
-		      fi
-		    done
-		    exit 1 # signal failure to match
-		    )
-		    if test $? = 1; then
-		      echo "*** unrecognized directive: $cmd" >&2
-		      exit 1
-		    fi
-		    ;;
+		  # refs/tags/git-control-*)
+		  #   cmd=$(git cat-file -p $newrev|tail -n+6)
+		  #   git config hooks.server.config-changing.valid-commands |
+		  #   (while read v_cmd; do
+		  #     if test "x$cmd" = "x$v_cmd"; then
+		  # 	echo Running cmd: "$v_cmd"
+		  # 	eval "$v_cmd"
+		  # 	match=1
+		  # 	exit 0 # found a match
+		  #     fi
+		  #   done
+		  #   exit 1 # signal failure to match
+		  #   )
+		  #   if test $? = 1; then
+		  #     echo "*** unrecognized directive: $cmd" >&2
+		  #     exit 1
+		  #   fi
+		  #   ;;
 		esac
 		# annotated tag
 		if [ "$allowmodifytag" != "true" ] && git rev-parse $refname > /dev/null 2>&1
