@@ -2,6 +2,7 @@
         repositoryformatversion = 0
         filemode = true
         bare = true
+	sharedrepository = all
 [receive]
         denynonfastforwards = true
 [hooks]
